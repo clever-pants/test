@@ -100,11 +100,7 @@
                                 <a class="text-blue-600 hover:underline" href="{{ route('owner.show', $owner->id) }}">Show</a></td>
                             <td class="border px-8 py-4">
                                 <a  class="text-blue-600 hover:underline" href="#" 
-                                    onclick="sendDelete({{ $owner->id }})">{{ __('DELETE') }}</a>
-                                <form id="destroy-form{{ $owner->id }}" action="{{ route('owner.destroy', $owner->id) }}" method="POST" style="display: none;">
-                                    @method('DELETE')
-                                    @csrf
-                                </form>
+                                    onclick="sendDelete('{{ route('owner.destroy', $owner->id) }}')">{{ __('DELETE') }}</a>
                             </td>
                         </tr>
                     @endforeach
@@ -112,6 +108,11 @@
             </table>
         </div>
     </div>
+
+    <form id="destroy-form" action="/" method="POST" style="display: none;">
+        @method('DELETE')
+        @csrf
+    </form>
 
     <div class="flex flex-row">
         <div class="mt-5">
@@ -129,10 +130,11 @@
         element.className = element.className == 'hidden' ? 'block' : 'hidden';
     }
 
-    function sendDelete(id) {
+    function sendDelete(newaction) {
         event.preventDefault();
+        document.getElementById('destroy-form').action = newaction
         if (confirm("Are you sure you want to delete this owner?") === true) {
-            document.getElementById('destroy-form'+id).submit();
+            document.getElementById('destroy-form').submit();
         }
     }
 </script>
