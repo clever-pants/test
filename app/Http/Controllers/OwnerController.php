@@ -22,9 +22,14 @@ class OwnerController extends Controller
      */
     public function create(StoreOwnerRequest $request)
     {
-        Owner::create($request->safe()->toArray());
-        $owners = OwnerResource::collection(Owner::all());
-        return view('welcome')->with('owners', $owners);
+        $request->validate([
+            'forename' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email']
+        ]);
+
+        $this->store($request);
+        return view('welcome')->with('owners', $this->index());
     }
 
     /**
@@ -67,7 +72,6 @@ class OwnerController extends Controller
     public function destroy(Owner $owner)
     {
         $owner->delete();
-        $owners = OwnerResource::collection(Owner::all());
-        return view('welcome')->with('owners', $owners);
+        return view('welcome')->with('owners', $this->index());
     }
 }

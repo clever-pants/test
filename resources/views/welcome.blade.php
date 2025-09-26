@@ -2,12 +2,14 @@
 
 @section('content')
     <div class="flex flex-col">
+
         <div class="basis-full">
             <h1 class="mb-2 text-2xl font-bold">Car Owners</h1>
             <button type="button"
             class="py-2.5 px-5 me-2 mt-4 mb-8 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-blue-100 hover:text-blue-900"
             onclick="toggle()">Add new owner</button>
         </div>
+
         <div class="basis-full">
             <div id="newownerdiv" class="hidden">
                 <form id="newownerform" method="get" action="{{ route('owner.create') }}">
@@ -22,7 +24,7 @@
                                     <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Forename</label>
                                     <div class="mt-2">
                                         <input id="first-name" type="text" name="forename" autocomplete="Forename" 
-                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" required />
                                     </div>
                                 </div>
 
@@ -30,7 +32,7 @@
                                     <label for="last-name" class="block text-sm/6 font-medium text-gray-900">Surname</label>
                                     <div class="mt-2">
                                         <input id="last-name" type="text" name="surname" autocomplete="Surname" 
-                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" required />
                                     </div>
                                 </div>
 
@@ -63,7 +65,18 @@
                     </div>
                 </form>
             </div>
+            
+            @if ($errors->any())
+            <div class="mb-6">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li class="text-red-500">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
         </div>
+
         <div class="basis-full">
             <table class="mx-auto table-auto border-collapse border border-slate-500 shadow-lg">
                 <thead>
@@ -106,9 +119,7 @@
                 Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
             </div>
         </div>
-
     </div>
-
 @endsection
 
 @section('scripts')
