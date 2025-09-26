@@ -33,7 +33,22 @@ class OwnerControllerTest extends AbstractResourceControllerTestBase
 
     public function test_create()
     {
-        $this->markTestIncomplete();
+        $testUser = [
+            'forename' => 'Test',
+            'surname' => 'User',
+            'email' => 'test@email.com',
+            'phone' => null,
+        ];
+
+        $this->assertDatabaseMissing('owners', $testUser);
+        $this->assertCount(self::OWNER_COUNT, Owner::all());
+
+        $this->get('http://localhost/owner/create?forename=Test&surname=User&email=test%40email.com')->assertOk();
+        $this->get('http://localhost/owner/create?surname=User&email=test%40email.com&phone=0123456789')->assertRedirect();
+        $this->get('http://localhost/owner/create?forename=Test&surname=User&email=email&phone=0123456789')->assertRedirect();
+
+        $this->assertCount(self::OWNER_COUNT + 1, Owner::all());
+        $this->assertDatabaseHas('owners', $testUser);
     }
 
     public function test_store()
@@ -55,7 +70,12 @@ class OwnerControllerTest extends AbstractResourceControllerTestBase
 
     public function test_show()
     {
-        $this->markTestIncomplete();
+        $owner = Owner::firstOrFail();
+        $response = $this->get(route('owner.show', $owner->id));
+        $response->assertOk();
+        $response->assertSee($owner->forename);
+        $response->assertSee($owner->surname);
+        $response->assertSee($owner->email);
     }
 
     public function test_edit()
