@@ -93,6 +93,7 @@ services:
             - sail
     selenium:
         image: selenium/standalone-chrome
+        platform: 'linux/amd64'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         volumes:

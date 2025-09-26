@@ -20,9 +20,11 @@ class OwnerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(StoreOwnerRequest $request)
     {
-        //
+        Owner::create($request->safe()->toArray());
+        $owners = OwnerResource::collection(Owner::all());
+        return view('welcome')->with('owners', $owners);
     }
 
     /**
@@ -65,5 +67,7 @@ class OwnerController extends Controller
     public function destroy(Owner $owner)
     {
         $owner->delete();
+        $owners = OwnerResource::collection(Owner::all());
+        return view('welcome')->with('owners', $owners);
     }
 }
