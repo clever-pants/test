@@ -29,7 +29,7 @@ class OwnerController extends Controller
         ]);
 
         $this->store($request);
-        return redirect()->route('welcome');
+        return view('welcome')->with('owners', $this->index());
     }
 
     /**
@@ -72,6 +72,6 @@ class OwnerController extends Controller
     public function destroy(Owner $owner)
     {
         $owner->delete();
-        return redirect()->route('welcome');
+        return view('welcome')->with('owners', $this->index());
     }
 }
